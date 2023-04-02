@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
@@ -10,6 +11,10 @@ namespace BirdSim
 {
     internal class SimulationController
     {
+        private SimulationInstance simulationInstance;
+        private TimeController timeController;
+        private LatitudinalAgent newAgent;
+        private Menu menu;
 
         Dictionary<string, string> countries = new Dictionary<string, string>()
     {
@@ -255,13 +260,18 @@ namespace BirdSim
     };
 
         List<Country> countryObjects = new List<Country>();
-        private int year = 1995;
-        private int month = 1;
+        List<LatitudinalAgent> agents = new List<LatitudinalAgent>();
+
 
         public SimulationController()
         {
             setupCountries();
-            SimulationInstance simulationInstance = new SimulationInstance(countryObjects);
+            simulationInstance = new SimulationInstance(countryObjects);
+            timeController = new TimeController();
+            setUpAgent();
+            menu = new Menu(this);
+            menu.produceMainMenu();
+
         }
 
         void setupCountries()
@@ -275,7 +285,8 @@ namespace BirdSim
 
         void setUpAgent()
         {
-            Agent newAgent = new Agent();
+            newAgent = new LatitudinalAgent("Lat Agent", 0, 0, countryObjects.FirstOrDefault(), countryObjects.LastOrDefault());
+            agents.Add(newAgent);
         }
 
         void setCurrentTemp()
@@ -295,8 +306,27 @@ namespace BirdSim
             }
         }
 
-        
+        public List<LatitudinalAgent> getAgentsList()
+        {
+            return agents;
+        }
 
+        public Country getCountryFromCountryCode(string value)
+        {
+            foreach (Country country in countryObjects)
+            {
+                if (country.getCode() == value)
+                {
+                    return country;
+                }
+            }
 
+            return null;
+        }
+
+        public void addAgentToAgentsList(LatitudinalAgent agent)
+        {
+            agents.Add(agent);
+        }
     }
 }

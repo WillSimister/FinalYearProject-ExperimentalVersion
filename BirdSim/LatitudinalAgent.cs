@@ -24,5 +24,29 @@ namespace BirdSim
             normalSouthernCountry = SouthernCountry;
         }
 
+        public string getName()
+        {
+            return speciesName;
+        }
+
+        public int getNormalSouthernMigrationMonth()
+        {
+            return NormalSouthernMigrationMonth;
+        }
+
+        public int getNormalNorthernMigrationMonth()
+        {
+            return NormalNorthernMigrationMonth;
+        }
+
+        public Country getNormalNorthernCountry()
+        {
+            return normalNorthernCountry;
+        }
+
+        public Country getNormalSouthernCountry()
+        {
+            return normalSouthernCountry;
+        }
     }
 }

@@ -6,9 +6,7 @@ using System.Threading.Tasks;
 
 namespace BirdSim
 {
-    internal class MigrationLogger
+    internal class Agent
     {
-        public MigrationLogger() { }
-
     }
 }

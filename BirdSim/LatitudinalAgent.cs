@@ -14,6 +14,7 @@ namespace BirdSim
         private int NormalNorthernMigrationMonth;
         private Country normalNorthernCountry;
         private Country normalSouthernCountry;
+        private List<Rule> rules;
 
         public LatitudinalAgent(string name, int SouthernMonth, int NorthernMonth, Country NorthernCountry, Country SouthernCountry) 
         {
@@ -47,6 +48,11 @@ namespace BirdSim
         public Country getNormalSouthernCountry()
         {
             return normalSouthernCountry;
+        }
+
+        public void addRule(Rule rule)
+        {
+            rules.Add(rule);
         }
     }
 }

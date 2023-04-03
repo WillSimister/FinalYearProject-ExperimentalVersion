@@ -29,5 +29,9 @@ namespace BirdSim
         }
 
 
+        public void runExperiment()
+        { }
+        
+
     }
 }

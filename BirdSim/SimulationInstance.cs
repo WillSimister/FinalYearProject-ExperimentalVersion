@@ -9,13 +9,17 @@ namespace BirdSim
     internal class SimulationInstance
     {
         private List<Country> countries;
-                 
-        public SimulationInstance(List<Country> countries)
+        private string instanceName;
+
+        public SimulationInstance(List<Country> countries, string instanceName)
         {
             this.countries = countries;
+            this.instanceName = instanceName;
         }
 
         public List<Country> Countries { get { return countries; } }
+
+        public string InstanceName { get { return instanceName;} }
 
         public void SetCountries(List<Country> newCountries)
         {

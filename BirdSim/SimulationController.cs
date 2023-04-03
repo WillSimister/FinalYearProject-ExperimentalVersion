@@ -261,12 +261,12 @@ namespace BirdSim
 
         List<Country> countryObjects = new List<Country>();
         List<LatitudinalAgent> agents = new List<LatitudinalAgent>();
+        List<SimulationInstance> environments = new List<SimulationInstance>();
 
 
         public SimulationController()
         {
             setupCountries();
-            simulationInstance = new SimulationInstance(countryObjects);
             timeController = new TimeController();
             setUpAgent();
             menu = new Menu(this);
@@ -328,5 +328,12 @@ namespace BirdSim
         {
             agents.Add(agent);
         }
+
+        public void addEnvironment(SimulationInstance instance)
+        {
+            environments.Add(instance);
+        }
+
+        public List<SimulationInstance> getEnvironments() { return environments; }
     }
 }

@@ -8,5 +8,16 @@ namespace BirdSim
 {
     internal class Agent
     {
+        private int breedingMigrationMonth;
+        private int hidingMigrationMonth;
+        private string currentLocation;
+        private int normalNorthernMigrationTempMax;
+        private int normalNorthernMigrationTempMin;
+        private int normalSouthernMigrationTempMax;
+        private int normalSouthernMigrationTempMin;
+
+        public Agent() { }
+
+
     }
 }

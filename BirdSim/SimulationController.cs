@@ -1,11 +1,17 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
+using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 using System.Transactions;
+using System.Xml.Linq;
+using Newtonsoft.Json;
+using JsonSerializer = System.Text.Json.JsonSerializer;
 
 namespace BirdSim
 {
@@ -262,6 +268,7 @@ namespace BirdSim
         List<Country> countryObjects = new List<Country>();
         List<LatitudinalAgent> agents = new List<LatitudinalAgent>();
         List<SimulationInstance> environments = new List<SimulationInstance>();
+        List<Experiment> experiments = new List<Experiment>();
 
 
         public SimulationController()
@@ -285,8 +292,7 @@ namespace BirdSim
 
         void setUpAgent()
         {
-            newAgent = new LatitudinalAgent("Lat Agent", 0, 0, countryObjects.FirstOrDefault(), countryObjects.LastOrDefault());
-            agents.Add(newAgent);
+
         }
 
         void setCurrentTemp()
@@ -335,5 +341,31 @@ namespace BirdSim
         }
 
         public List<SimulationInstance> getEnvironments() { return environments; }
+
+        public void addExperimentToList(Experiment experiment)
+        {
+            experiments.Add(experiment);
+        }
+
+        public List<Experiment> getExperiments()
+        {
+            return experiments;
+        }
+
+        public void setAgentRule(int agentIndex, Rule rule)
+        {
+            agents[agentIndex].addRule(rule);
+        }
+
+        public void saveAllData()
+        {
+
+        }
+
+        public void saveEnvironments()
+        {
+            var options = new JsonSerializerOptions { WriteIndented = true };
+            string jsonString = JsonSerializer.Serialize(environments.First(), options);
+        }
     }
 }

@@ -24,9 +24,9 @@ namespace BirdSim
             Console.WriteLine("----------------------------------------------------------------------");
             Console.WriteLine("---------------------Bird Migration Simulator-------------------------");
             Console.WriteLine("----------------------------------------------------------------------");
-            Console.WriteLine("------AGENT OPTIONS--------ENVIRONMENT OPTIONS-----------EXPERIMENTS--");
-            Console.WriteLine("------1.Create Agent-------a.Create Environment-----------------------");
-            Console.WriteLine("------2.View/Edit Agents---b.View/Edit Environment(s)-----------------");
+            Console.WriteLine("------AGENT OPTIONS--------ENVIRONMENT OPTIONS--------EXPERIMENTS-----");
+            Console.WriteLine("------1.Create Agent-------a.Create Environment-------4.New Experiment");
+            Console.WriteLine("------2.View/Edit Agents---b.View/Edit Environment(s)-5.Run Experiments");
             Console.WriteLine("------3.Add Rule to Agent---------------------------------------------");
 
             string input = getInput();
@@ -70,6 +70,21 @@ namespace BirdSim
                         showEnvironmentsMenu();
                         break;
                     }
+                case "4":
+                    {
+                        showCreateExperimentMenu();
+                        break;
+                    }
+                case "5":
+                    {
+                        viewEditExperiments();
+                        break;
+                    }
+                case "6":
+                    {
+                        controller.saveEnvironments();
+                        break;
+                    }
                 default:
                     {
                         produceMainMenu();
@@ -86,11 +101,55 @@ namespace BirdSim
             Console.WriteLine("----------------------------------------------------------------------");
             foreach (LatitudinalAgent latitudinalAgent in controller.getAgentsList())
             {
-                Console.WriteLine($"---Name: {latitudinalAgent.getName()}------------------------------------");
+                Console.WriteLine($"---ID:{controller.getAgentsList().IndexOf(latitudinalAgent)} Name: {latitudinalAgent.getName()}------------------------------------");
             }
+            Console.WriteLine("--A = View Agents Ruleset---------------------------------------------");
             Console.WriteLine("--Q = Back------------------------------------------------------------");
+            Console.WriteLine("-- >>> ");
+            string firstInput = Console.ReadLine().ToLower();
+            
+            if(firstInput == "a")
+            {
+                Console.WriteLine("Enter ID of agent you wish to see the ruleset for >>> ");
+                string secondInput = Console.ReadLine();
 
-            getInput();
+                if(int.TryParse(secondInput, out int i))
+                {
+                    if(i <= controller.getAgentsList().Count)
+                    {
+                        viewAgentsRules(controller.getAgentsList()[i]);
+                    }
+                }
+            }
+
+            string input = getInput();
+            processInput(input);
+        }
+
+        private void viewAgentsRules(LatitudinalAgent latitudinalAgent)
+        {
+            Console.Clear();
+            Console.WriteLine("----------------------------------------------------------------------");
+            Console.WriteLine("----------------------------Agents Rules------------------------------");
+            Console.WriteLine("----------------------------------------------------------------------");
+            Console.WriteLine($"--Rules for {latitudinalAgent.getName()} ----------------------------");
+            foreach(Rule rule in latitudinalAgent.getRules())
+            {
+                string comparator;
+                if(rule.getGreaterThan() == true)
+                {
+                    comparator = "greater than";
+                }
+                else if(rule.getLessThan() == true)
+                {
+                    comparator = "less than";
+                }
+                else
+                {
+                    comparator = "equal to";
+                }
+                Console.WriteLine($"-- Rule Name: {rule.getRuleName()}, Rule checks that: {rule.getRuleTypeAsString()}, is {comparator} the value: {rule.getRuleParameter()} if this rule is met the agent will - {rule.getActionAsString()}");
+            }
         }
 
         public void showCreateAgentMenu()
@@ -100,6 +159,8 @@ namespace BirdSim
             int normalSouthernMonth;
             Country normalNorthernCountry;
             Country normalSouthernCountry;
+            Country currentCountry;
+            
             Console.Clear();
             Console.WriteLine("----------------------------------------------------------------------");
             Console.WriteLine("--------------------------Create Agent--------------------------------");
@@ -108,10 +169,10 @@ namespace BirdSim
             name = Console.ReadLine();
 
             Console.Write("\n--Input normal Month that the species migrate north (As an integer) >>>");
-            normalNorthernMonth = int.Parse(Console.ReadLine());
+            int.TryParse(Console.ReadLine(), out normalNorthernMonth);
 
             Console.Write("\n--Input normal Month that the species migrate south (As an integer) >>>");
-            normalSouthernMonth = int.Parse(Console.ReadLine());
+            int.TryParse(Console.ReadLine(), out normalSouthernMonth);
 
             Console.Write("\n--Input normal Northern Country - Enter ISO Country Code >>> ");
             normalNorthernCountry = controller.getCountryFromCountryCode(Console.ReadLine());
@@ -119,10 +180,53 @@ namespace BirdSim
             Console.Write("\n--Input normal Southern Country - Enter ISO Country Code >>> ");
             normalSouthernCountry = controller.getCountryFromCountryCode(Console.ReadLine());
 
-            LatitudinalAgent agent = new LatitudinalAgent(name, normalSouthernMonth, normalNorthernMonth, normalNorthernCountry, normalSouthernCountry);
-            controller.addAgentToAgentsList(agent);
+            if (normalNorthernCountry == null|| normalSouthernCountry == null)
+            {
+                Console.WriteLine("One of your country codes does not exist - try again");
+                Console.ReadKey();
+                showCreateAgentMenu();
+            }
 
-            produceMainMenu();
+            Console.Write("\n--Which country should this species be located in January? --------------");
+            Console.Write($"\n-- 1. {normalNorthernCountry.getName()} --------------------------------");
+            Console.Write($"\n-- 2. {normalSouthernCountry.getName()} --------------------------------");
+            Console.Write("\n-- 1 or 2? >>> ");
+
+            switch (Console.ReadLine())
+            {
+                case "1":
+                    {
+                        currentCountry = normalNorthernCountry;
+                        break;
+                    }
+                case "2":
+                    {
+                        currentCountry = normalSouthernCountry;
+                        break;
+                    }
+                default:
+                    {
+                        currentCountry = normalNorthernCountry;
+                        break;
+                    }
+            }
+
+            if(name == "" || normalSouthernMonth == 0 || normalNorthernCountry == null || normalNorthernMonth == null || currentCountry == null)
+            {
+                Console.WriteLine("Something wasn't inputted correctly - try again");
+                Console.ReadKey();
+                showCreateAgentMenu();
+            }
+            else
+            {
+                LatitudinalAgent agent = new LatitudinalAgent(name, normalSouthernMonth, normalNorthernMonth, normalNorthernCountry, normalSouthernCountry, currentCountry);
+                controller.addAgentToAgentsList(agent);
+                Console.WriteLine($"{name}: agent created");
+
+                string input = getInput();
+                processInput(input);
+
+            }
         }
 
         public void ShowCreateEnvironmentMenu()
@@ -151,6 +255,14 @@ namespace BirdSim
             northernMostCountry = controller.getCountryFromCountryCode(Console.ReadLine());
             Console.Write("\n--Southern Most (Using ISO 2 Character Code) >>> ");
             southernMostCountry = controller.getCountryFromCountryCode(Console.ReadLine());
+
+            if(northernMostCountry == null || southernMostCountry == null)
+            {
+                Console.WriteLine("One of your country codes does not exist - try again");
+                Console.ReadKey();
+                ShowCreateEnvironmentMenu();
+            }
+
             Console.Write("\n--Add northern most data >>> ");
             northernMostCountry.setClimateData(climateData.getNorthernPlover());
             Console.Write("Done");
@@ -175,6 +287,12 @@ namespace BirdSim
             Console.WriteLine("Using the ISO 2 Character code - what is the next country west of the Southern Country in this instance >>>");
             westSouthCountry = Console.ReadLine();
 
+            if (instanceName == "" || northNorthCountry == "" || northSouthCountry == "" || eastNorthCountry == "" || westNorthCountry == "" || southNorthCountry == "" || westSouthCountry == "" || eastNorthCountry == "")
+            {
+                Console.WriteLine("Something wasn't inputted correctly - try again");
+                ShowCreateEnvironmentMenu();
+            }
+
             northernMostCountry.setClosestCountries(northNorthCountry, eastNorthCountry, southNorthCountry, westNorthCountry);
             southernMostCountry.setClosestCountries(northSouthCountry, eastSouthCountry, southSouthCountry, westSouthCountry);
 
@@ -185,7 +303,8 @@ namespace BirdSim
             SimulationInstance simulationInstance = new SimulationInstance(environment, instanceName);
             controller.addEnvironment(simulationInstance);
 
-            produceMainMenu();
+            string input = getInput();
+            processInput(input);
         }
 
         public void showEnvironmentsMenu()
@@ -200,6 +319,8 @@ namespace BirdSim
             }
             Console.WriteLine("--Q = Back------------------------------------------------------------");
 
+            string input = getInput();
+            processInput(input);
         }
 
         public void addRuleToAgentMenu()
@@ -220,12 +341,11 @@ namespace BirdSim
 
             Console.Clear();
             string ruleName;
-            SimulationProperty? simulationProperty;
+            ruleTypeEnum simulationProperty;
             SimulationProperty? simulationProperty1;
             SimulationProperty? simulationProperty2;
             int propertyValue;
             int property2Value;
-            int property3Value;
             bool greaterThan = false;
             bool lessThan = false;
             bool equalTo = false;
@@ -234,13 +354,8 @@ namespace BirdSim
             bool greaterThan2 = false;
             bool lessThan2 = false;
             bool equalTo2 = false;
-            bool and2 = false;
-            bool or2 = false;
-            bool greaterThan3 = false;
-            bool lessThan3 = false;
-            bool equalTo3 = false;
-            bool and3 = false;
-            bool or3 = false;
+
+
             Console.WriteLine("----------------------------------------------------------------------");
             Console.WriteLine("--------------------------Add Rule to Agent---------------------------");
             Console.WriteLine("----------------------------------------------------------------------");
@@ -248,13 +363,47 @@ namespace BirdSim
             Console.Write("--- Name the rule >>> ");
             ruleName = Console.ReadLine();
             Console.Write("\n--- Which Simulation Property is this targetting? >>> ");
-            simulationProperty = new Climate();
+            Console.Write("\n--- 1. Month");
+            Console.Write("\n--- 2. Temperature");
+            string simPropInput = Console.ReadLine();
+
+            if (simPropInput == "")
+            {
+                Console.WriteLine("Sorry that wasn't quite right - try again");
+                addRuleToAgentMenu();
+            }
+
+            switch (simPropInput)
+            {
+                case "1":
+                    {
+                        simulationProperty = ruleTypeEnum.Month;
+                        break;
+                    }
+                case "2":
+                    {
+                        simulationProperty = ruleTypeEnum.ClimateTemp;
+                        break;
+                    }
+                default:
+                    {
+                        simulationProperty = ruleTypeEnum.Month;
+                        break;
+                    }
+            }
+
             Console.Write("--- The Simulation Property value should be...");
             Console.Write("\n--- 1. Greater than");
             Console.Write("\n--- 2. Less than");
             Console.Write("\n--- 3. Equal to");
             Console.Write("\n--- >>> ");
             string input = Console.ReadLine();
+
+            if (input == "")
+            {
+                Console.WriteLine("Sorry that wasn't quite right - try again");
+                addRuleToAgentMenu();
+            }
             switch (input)
             {
                 case "1":
@@ -275,25 +424,36 @@ namespace BirdSim
             }
             Console.Write("\n what int should the property value be greater than, less to or equal to? >>> ");
             propertyValue = int.Parse(Console.ReadLine());
-            Console.Write("\n--- Should the Simulation Property have any other indicators --- should there be a logical AND or a logical OR? (Y/N) >>> ");
-            string yesNo = Console.ReadLine();
+            //Console.Write("\n--- Should the Simulation Property have any other indicators --- should there be a logical AND or a logical OR? (Y/N) >>> ");
+            //string yesNo = Console.ReadLine();
 
-            if (yesNo.ToLower() == "y") 
-            {
-                if(andOr() == "AND")
-                {
-                    and = true;
-                }
-                else
-                {
-                    or = true;
-                }
-            }
-            else
-            {
+            //if (yesNo.ToLower() == "y") 
+            //{
+            //    if(andOr() == "AND")
+            //    {
+            //        and = true;
+            //    }
+            //    else
+            //    {
+            //        or = true;
+            //    }
+            //}
+            //else
+            //{
 
+            //}
+            if(ruleName == "" || simulationProperty == null)
+            {
+                Console.WriteLine("Sorry that wasn't quite right - try again");
+                addRuleToAgentMenu();
             }
+
+            Rule rule = new Rule(ruleName, simulationProperty, greaterThan, lessThan, equalTo, and, or, propertyValue);
+            controller.setAgentRule(int.Parse(agentInput), rule);
             Console.WriteLine("--Q = Back------------------------------------------------------------");
+
+            string newInp = getInput();
+            processInput(newInp);
         }
 
         private string andOr()
@@ -334,5 +494,102 @@ namespace BirdSim
         //    Console.Write("\n what int should the property value be greater than, less to or equal to? >>> ");
         //    propertyValue = int.Parse(Console.ReadLine());
         //}
+
+        public void showCreateExperimentMenu()
+        {
+            Console.Clear();
+            Console.WriteLine("----------------------------------------------------------------------");
+            Console.WriteLine("--------------------------Create Experiment---------------------------");
+            Console.WriteLine("----------------------------------------------------------------------");
+            Console.WriteLine("--- What should we name this experiment ------------------------------");
+            string experimentName = Console.ReadLine();
+
+            Console.WriteLine("--- Add a description for this experiment ----------------------------");
+            string experimentDesc = Console.ReadLine();
+
+            Console.WriteLine("--- Select an Agent --------------------------------------------------");
+            foreach (LatitudinalAgent latitudinalAgent in controller.getAgentsList())
+            {
+                Console.WriteLine($"---({controller.getAgentsList().IndexOf(latitudinalAgent)})Name: {latitudinalAgent.getName()}------------------------------------");
+            }
+            Console.WriteLine("----------------------------------------------------------------------");
+            Console.Write("--- Select agent >>> ");
+            string agentInput = Console.ReadLine();
+
+            Console.WriteLine("--- Select an Environment --------------------------------------------------");
+            foreach (LatitudinalAgent latitudinalAgent in controller.getAgentsList())
+            {
+                Console.WriteLine($"---({controller.getAgentsList().IndexOf(latitudinalAgent)})Name: {latitudinalAgent.getName()}------------------------------------");
+            }
+            Console.WriteLine("----------------------------------------------------------------------");
+            Console.Write("--- Select Environment >>> ");
+            string environment = Console.ReadLine();
+
+
+
+            if (environment == "" || agentInput == "" || experimentDesc == "" || experimentName == "")
+            {
+                if (!int.TryParse(environment, out int res))
+                {
+                    if(!int.TryParse(agentInput, out int resA))
+                    {
+                        if(res > controller.getEnvironments().Count || resA > controller.getAgentsList().Count)
+                        {
+                            Console.WriteLine("Sorry something was entered incorrectly - try again");
+                            showCreateExperimentMenu();
+                        }
+                        Console.WriteLine("Sorry something was entered incorrectly - try again");
+                        showCreateExperimentMenu();
+                    }
+                    Console.WriteLine("Sorry something was entered incorrectly - try again");
+                    showCreateExperimentMenu();
+                }
+                Console.WriteLine("Sorry something was entered incorrectly - try again");
+                showCreateExperimentMenu();
+            }
+
+            Experiment newExperiment = new Experiment(controller.getEnvironments()[int.Parse(environment)], controller.getAgentsList()[int.Parse(agentInput)], experimentName, experimentDesc, controller);
+            controller.addExperimentToList(newExperiment);
+
+            string input = getInput();
+            processInput(input);
+        }
+
+        public void viewEditExperiments()
+        {
+            Console.Clear();
+            Console.WriteLine("----------------------------------------------------------------------");
+            Console.WriteLine("-------------------------View/Run Experiments-------------------------");
+            Console.WriteLine("----------------------------------------------------------------------");
+            foreach (Experiment experiment in controller.getExperiments())
+            {
+                Console.WriteLine($"---({controller.getExperiments().IndexOf(experiment)})Name: {experiment.getName()}------------------------------------");
+            }
+            Console.WriteLine("--A = Run Experiment--------------------------------------------------");
+            Console.WriteLine("--Q = Back------------------------------------------------------------");
+
+            string firstInput = Console.ReadLine().ToLower();
+
+            if (firstInput == "a")
+            {
+                Console.WriteLine("Enter ID of experiment you wish to run >>> ");
+                string secondInput = Console.ReadLine();
+
+                if (int.TryParse(secondInput, out int i))
+                {
+                    if (i <= controller.getExperiments().Count)
+                    {
+                        controller.getExperiments()[i].runExperiment();
+                    }
+                }
+            }
+
+
+
+            string input = getInput();
+            processInput(input);
+        }
+
     }
+
 }

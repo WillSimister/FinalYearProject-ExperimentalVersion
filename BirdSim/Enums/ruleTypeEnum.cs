@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace BirdSim
 {
-    internal class MigrationLogger
+    internal enum ruleTypeEnum
     {
-        public MigrationLogger() { }
-
+        Month, 
+        ClimateTemp
     }
 }

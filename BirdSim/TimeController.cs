@@ -11,6 +11,8 @@ namespace BirdSim
     {
         private SimulationTime simulationTime;
 
+        private bool runOneYear;
+
         public TimeController(int month = 0, int year = 0)
         {
             if(month == 0 || year == 0)
@@ -23,9 +25,20 @@ namespace BirdSim
             }
         }
 
+        public TimeController (bool _runOneYear)
+        {
+            runOneYear = _runOneYear;
+            simulationTime = new SimulationTime(1, 0001);
+        }
+
         public string getTimeAsString()
         {
            return simulationTime.getCurrentTime();
+        }
+
+        public SimulationTime getSimulationController()
+        {
+            return simulationTime;
         }
 
         public void progressTime()
@@ -36,9 +49,18 @@ namespace BirdSim
             }
             else
             {
+                if(runOneYear == true)
+                {
+                    //Year is finished
+                    runOneYear = false;
+                    simulationTime.setMonth(1);
+                    return;
+                }
                 simulationTime.setMonth(1);
                 simulationTime.setYear(simulationTime.getYear() + 1);
             }
         }
+
+        
     }
 }

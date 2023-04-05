@@ -15,6 +15,7 @@ namespace BirdSim
         private string ClosestEasternCountryCode;
         private string ClosestSouthernCountryCode;
         private string ClosestWesternCountryCode;
+        List<SimulationProperty> simulationProperties = new List<SimulationProperty>();
 
         private Dictionary<int, double> climateData;
 
@@ -77,7 +78,6 @@ namespace BirdSim
         }
 
 
-        List<SimulationProperty> simulationProperties = new List<SimulationProperty>();
         
     }
 }

@@ -61,6 +61,11 @@ namespace BirdSim
             }
         }
 
+        public bool getOneYear()
+        {
+            return runOneYear;
+        }
+
         
     }
 }

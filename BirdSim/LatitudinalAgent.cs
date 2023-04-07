@@ -39,9 +39,19 @@ namespace BirdSim
             return NormalSouthernMigrationMonth;
         }
 
+        public string getNormalSouthernMigrationMonth_AsString()
+        {
+            return NormalSouthernMigrationMonth.ToString();
+        }
+
         public int getNormalNorthernMigrationMonth()
         {
             return NormalNorthernMigrationMonth;
+        }
+
+        public string getNormalNorthernMigrationMonth_AsString()
+        {
+            return NormalNorthernMigrationMonth.ToString();
         }
 
         public Country getNormalNorthernCountry()
@@ -67,6 +77,11 @@ namespace BirdSim
         public void setCurrentLocation(Country currentCountry)
         {
             currentLocation = currentCountry;
+        }
+
+        public Country getCurrentLocation()
+        {
+            return currentLocation;
         }
     }
 }

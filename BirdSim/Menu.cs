@@ -342,7 +342,7 @@ namespace BirdSim
             Console.Clear();
             string ruleName;
             ruleTypeEnum simulationProperty;
-            SimulationProperty? simulationProperty1;
+            ActionEnum simulationAction;
             SimulationProperty? simulationProperty2;
             int propertyValue;
             int property2Value;
@@ -442,13 +442,45 @@ namespace BirdSim
             //{
 
             //}
-            if(ruleName == "" || simulationProperty == null)
+
+            Console.Write("\n--- Which Simulation Action should occur? >>> ");
+            Console.Write("\n--- 1. Try Migrate to Breeding Location");
+            Console.Write("\n--- 2. Try Migrate to Nesting Location");
+            string simActionInput = Console.ReadLine();
+
+            if (simActionInput == "")
             {
                 Console.WriteLine("Sorry that wasn't quite right - try again");
                 addRuleToAgentMenu();
             }
 
-            Rule rule = new Rule(ruleName, simulationProperty, greaterThan, lessThan, equalTo, and, or, propertyValue);
+            switch (simPropInput)
+            {
+                case "1":
+                    {
+                        simulationAction = ActionEnum.migrateNorth;
+                        break;
+                    }
+                case "2":
+                    {
+                        simulationAction = ActionEnum.migrateSouth;
+                        break;
+                    }
+                default:
+                    {
+                        simulationAction = ActionEnum.migrateNorth;
+                        break;
+                    }
+            }
+
+
+            if (ruleName == "" || simulationProperty == null)
+            {
+                Console.WriteLine("Sorry that wasn't quite right - try again");
+                addRuleToAgentMenu();
+            }
+
+            Rule rule = new Rule(ruleName, simulationProperty, greaterThan, lessThan, equalTo, and, or, propertyValue, simulationAction);
             controller.setAgentRule(int.Parse(agentInput), rule);
             Console.WriteLine("--Q = Back------------------------------------------------------------");
 

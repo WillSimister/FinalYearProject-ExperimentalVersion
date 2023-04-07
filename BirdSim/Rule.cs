@@ -18,7 +18,7 @@ namespace BirdSim
         bool or = false;
         int ruleParameter;
 
-        public Rule(string name, ruleTypeEnum property, bool greaterThan, bool lessThan, bool equalTo, bool and, bool or, int ruleParameter)
+        public Rule(string name, ruleTypeEnum property, bool greaterThan, bool lessThan, bool equalTo, bool and, bool or, int ruleParameter, ActionEnum action)
         {
             this.name = name;
             this.property = property;
@@ -29,6 +29,7 @@ namespace BirdSim
             this.or = or;
             this.ruleParameter = ruleParameter;
             this.property = property;
+            this.action = action;
         }
 
         public ruleTypeEnum getRuleType()

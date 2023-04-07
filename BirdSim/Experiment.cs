@@ -12,6 +12,8 @@ namespace BirdSim
         private SimulationController simulationController;
         private SimulationInstance environment;
         private Agent agent;
+        private ExperimentLogger logger;
+        TimeController timeController;
 
         private string experimentName;
         private string? experimentDescription;
@@ -27,6 +29,7 @@ namespace BirdSim
             experimentName = expName;
             experimentDescription = expDesc;
             simulationController = controller;
+            logger = new ExperimentLogger(this);
         }
 
 
@@ -43,21 +46,25 @@ namespace BirdSim
             }
 
             //So we get a time controller - set month to 0;
-            TimeController timeController = new TimeController();
+            timeController = new TimeController(true);
+            bool hasMigrated = false;
             //Check is it Agents normal northern migration month
             if(latAgent != null)
             {
-                bool hasMigrated = false;
-                foreach (Rule rule in latAgent.getRules())
+                while(timeController.getOneYear() == true)
                 {
-                    if(rule.getRuleType() == ruleTypeEnum.Month)
+                    foreach (Rule rule in latAgent.getRules())
                     {
-                        checkMonthRules(ref hasMigrated, ref latAgent, rule, timeController);
+                        if(rule.getRuleType() == ruleTypeEnum.Month)
+                        {
+                            checkMonthRules(ref hasMigrated, ref latAgent, rule, timeController);
+                        }
+                        if(rule.getRuleType() == ruleTypeEnum.ClimateTemp)
+                        {
+                            checkClimateTempRule(ref hasMigrated, ref latAgent, rule, timeController);
+                        }
                     }
-                    if(rule.getRuleType() == ruleTypeEnum.ClimateTemp)
-                    {
-                        checkClimateTempRule(ref hasMigrated, ref latAgent, rule, timeController);
-                    }
+                    timeController.progressTime();
                 }
             }
             //Check if any rules are being hit
@@ -131,11 +138,13 @@ namespace BirdSim
                     Country nextClosestNorthernCountry = simulationController.getCountryFromCountryCode(latAgent.getNormalNorthernCountry().getClosestNorthern());
                     latAgent.setCurrentLocation(nextClosestNorthernCountry);
                     //Log Migration
+                    logger.addNewLineToLog($"breeding migration, {latAgent.getName()}, {latAgent.getNormalNorthernCountry().getName()}, {latAgent.getNormalNorthernMigrationMonth},{latAgent.getCurrentLocation},{timeController.getSimulationController().getMonth()}");
                 }
                 else
                 {
                     latAgent.setCurrentLocation(latAgent.getNormalNorthernCountry());
                     //Log Migration
+                    logger.addNewLineToLog($"breeding migration, {latAgent.getName()}, {latAgent.getNormalNorthernCountry().getName()}, {latAgent.getNormalNorthernMigrationMonth},{latAgent.getCurrentLocation},{timeController.getSimulationController().getMonth()}");
                 }
             }
             else if (rule.getAction() == ActionEnum.migrateSouth)
@@ -144,11 +153,15 @@ namespace BirdSim
                 {
                     Country nextClosestSouthernCountry = simulationController.getCountryFromCountryCode(latAgent.getNormalSouthernCountry().getClosestSouthern());
                     latAgent.setCurrentLocation(nextClosestSouthernCountry);
+                    logger.addNewLineToLog($"nesting migration, {latAgent.getName()}, {latAgent.getNormalSouthernCountry().getName()}, {latAgent.getNormalSouthernMigrationMonth},{latAgent.getCurrentLocation},{timeController.getSimulationController().getMonth()}");
+
                 }
                 else
                 {
                     //log Migration
                     latAgent.setCurrentLocation(latAgent.getNormalSouthernCountry());
+                    logger.addNewLineToLog($"nesting migration, {latAgent.getName()}, {latAgent.getNormalSouthernCountry().getName()}, {latAgent.getNormalSouthernMigrationMonth},{latAgent.getCurrentLocation},{timeController.getSimulationController().getMonth()}");
+
                 }
             }
         }

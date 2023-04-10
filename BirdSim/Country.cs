@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace BirdSim
 {
-    internal class Country
+    public class Country
     {
         private string name;
         private string countryCode;

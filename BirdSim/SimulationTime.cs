@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace BirdSim
 {
-    internal class SimulationTime
+    public class SimulationTime
     {
         private int month = 1;
         private int year = 1965;

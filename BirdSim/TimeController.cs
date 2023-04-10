@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace BirdSim
 {
-    internal class TimeController
+    public class TimeController
     {
         private SimulationTime simulationTime;
 

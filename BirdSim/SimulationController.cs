@@ -15,11 +15,9 @@ using JsonSerializer = System.Text.Json.JsonSerializer;
 
 namespace BirdSim
 {
-    internal class SimulationController
+    public class SimulationController
     {
-        private SimulationInstance simulationInstance;
         private TimeController timeController;
-        private LatitudinalAgent newAgent;
         private Menu menu;
 
         Dictionary<string, string> countries = new Dictionary<string, string>()
@@ -278,7 +276,13 @@ namespace BirdSim
             setUpAgent();
             menu = new Menu(this);
             menu.produceMainMenu();
+        }
 
+        //A second Constructor to allow us to create an instance of
+        //SimulationController that in essence is Headless for running tests
+        public SimulationController(bool isFromTests)
+        {
+            setupCountries();
         }
 
         void setupCountries()

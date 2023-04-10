@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace BirdSim
 {
-    internal class Menu
+    public class Menu
     {
         private SimulationController controller;
         public Menu(SimulationController simulationController) 
@@ -103,14 +103,15 @@ namespace BirdSim
             {
                 Console.WriteLine($"---ID:{controller.getAgentsList().IndexOf(latitudinalAgent)} Name: {latitudinalAgent.getName()}------------------------------------");
             }
-            Console.WriteLine("--A = View Agents Ruleset---------------------------------------------");
+            Console.WriteLine("--A = View an Agents Ruleset---------------------------------------------");
             Console.WriteLine("--Q = Back------------------------------------------------------------");
-            Console.WriteLine("-- >>> ");
+            Console.Write("-- >>> ");
             string firstInput = Console.ReadLine().ToLower();
             
             if(firstInput == "a")
             {
-                Console.WriteLine("Enter ID of agent you wish to see the ruleset for >>> ");
+                Console.Write("Enter ID of agent you wish to see the ruleset for");
+                Console.Write("\n-- >>> ");
                 string secondInput = Console.ReadLine();
 
                 if(int.TryParse(secondInput, out int i))
@@ -362,9 +363,10 @@ namespace BirdSim
             Console.WriteLine("-----------------------------Create Rule------------------------------");
             Console.Write("--- Name the rule >>> ");
             ruleName = Console.ReadLine();
-            Console.Write("\n--- Which Simulation Property is this targetting? >>> ");
+            Console.Write("\n--- Which Simulation Property is this targetting? ");
             Console.Write("\n--- 1. Month");
             Console.Write("\n--- 2. Temperature");
+            Console.Write("\n--- >>> ");
             string simPropInput = Console.ReadLine();
 
             if (simPropInput == "")
@@ -422,7 +424,8 @@ namespace BirdSim
                         break;
                     }
             }
-            Console.Write("\n what int should the property value be greater than, less to or equal to? >>> ");
+            Console.Write("\n what int value should the property value be greater than, less to or equal to? ");
+            Console.Write("\n >>> ");
             propertyValue = int.Parse(Console.ReadLine());
             //Console.Write("\n--- Should the Simulation Property have any other indicators --- should there be a logical AND or a logical OR? (Y/N) >>> ");
             //string yesNo = Console.ReadLine();
@@ -443,9 +446,10 @@ namespace BirdSim
 
             //}
 
-            Console.Write("\n--- Which Simulation Action should occur? >>> ");
+            Console.Write("\n--- Which Simulation Action should occur? ");
             Console.Write("\n--- 1. Try Migrate to Breeding Location");
             Console.Write("\n--- 2. Try Migrate to Nesting Location");
+            Console.Write("\n--- >>> ");
             string simActionInput = Console.ReadLine();
 
             if (simActionInput == "")
@@ -599,12 +603,13 @@ namespace BirdSim
             }
             Console.WriteLine("--A = Run Experiment--------------------------------------------------");
             Console.WriteLine("--Q = Back------------------------------------------------------------");
-
+            Console.Write("--- >>> ");
             string firstInput = Console.ReadLine().ToLower();
-
+            Console.WriteLine();
             if (firstInput == "a")
             {
-                Console.WriteLine("Enter ID of experiment you wish to run >>> ");
+                Console.WriteLine("Enter ID of experiment you wish to run");
+                Console.Write("--- >>> ");
                 string secondInput = Console.ReadLine();
 
                 if (int.TryParse(secondInput, out int i))

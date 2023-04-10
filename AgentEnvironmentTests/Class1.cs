@@ -4,12 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BirdSim
+namespace AgentEnvironmentTests
 {
-    public class Month : SimulationProperty
+    internal class Class1
     {
-        public Month() { }
-
-        string name = "month";
     }
 }

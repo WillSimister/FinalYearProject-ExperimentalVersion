@@ -8,7 +8,7 @@ using System.IO;
 
 namespace BirdSim
 {
-    internal class ExperimentLogger
+    public class ExperimentLogger
     {
         private List<string> log = new List<string>();
         private Experiment exp;
@@ -55,10 +55,8 @@ namespace BirdSim
                 using (FileStream fs = File.Create(fileName))
                 {
                     // Add some text to file    
-                    Byte[] title = new UTF8Encoding(true).GetBytes("New Text File");
+                    Byte[] title = new UTF8Encoding(true).GetBytes("migration_type, agent_name, predicted_country, normal_migration_month, actual_migration_country, actual_migration_month\n");
                     fs.Write(title, 0, title.Length);
-                    byte[] author = new UTF8Encoding(true).GetBytes("Experiment Handler");
-                    fs.Write(author, 0, author.Length);
                 }
             }
             catch (Exception Ex)
@@ -75,7 +73,7 @@ namespace BirdSim
                 //Open the File
                 StreamWriter sw = new StreamWriter(currentLogFile, true, Encoding.Default);
 
-                sw.WriteLine(textToAdd);
+                sw.WriteLine("\n" + textToAdd);
 
                 //close the file
                 sw.Close();
@@ -86,7 +84,7 @@ namespace BirdSim
             }
             finally
             {
-                Console.WriteLine("Executing finally block.");
+                Console.WriteLine("Experiment run successfully - See log file for results");
             }
         }
     }

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace BirdSim
 {
     // Refactor so that there is a base class of agent
-    internal class LatitudinalAgent : Agent
+    public class LatitudinalAgent : Agent
     {
         private string? speciesName;
         private Country? currentLocation;

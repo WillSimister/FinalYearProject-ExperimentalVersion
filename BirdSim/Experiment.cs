@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace BirdSim
 {
-    internal class Experiment
+    public class Experiment
     {
         private SimulationController simulationController;
         private SimulationInstance environment;
@@ -17,10 +17,6 @@ namespace BirdSim
 
         private string experimentName;
         private string? experimentDescription;
-        private string experimentVersion;
-
-        private string? experimentVersionDescription;
-        private string results;
 
         public Experiment(SimulationInstance instance, Agent _agent, string expName, string expDesc, SimulationController controller)
         {
@@ -42,6 +38,7 @@ namespace BirdSim
             }
             else
             {
+                //In future development this will be a larger if statement allowing for many different types of Migrant Agents.
                 latAgent = new LatitudinalAgent();
             }
 
@@ -144,7 +141,7 @@ namespace BirdSim
                 {
                     latAgent.setCurrentLocation(latAgent.getNormalNorthernCountry());
                     //Log Migration
-                    logger.addNewLineToLog($"breeding migration, {latAgent.getName()}, {latAgent.getNormalNorthernCountry().getName()}, {latAgent.getNormalNorthernMigrationMonth},{latAgent.getCurrentLocation},{timeController.getSimulationController().getMonth()}");
+                    logger.addNewLineToLog($"breeding migration, {latAgent.getName()}, {latAgent.getNormalNorthernCountry().getName()}, {latAgent.getNormalNorthernMigrationMonth()},{latAgent.getCurrentLocation().getName()},{timeController.getSimulationController().getMonth()}");
                 }
             }
             else if (rule.getAction() == ActionEnum.migrateSouth)

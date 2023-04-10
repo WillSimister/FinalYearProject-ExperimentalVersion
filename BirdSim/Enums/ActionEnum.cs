@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace BirdSim
 {
-    internal enum ActionEnum
+    public enum ActionEnum
     {
         migrateNorth,
         migrateSouth,

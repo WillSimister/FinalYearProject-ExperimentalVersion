@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace BirdSim
 {
-    internal class Rule
+    public class Rule
     {
         string name;
         ruleTypeEnum property;
@@ -30,6 +30,11 @@ namespace BirdSim
             this.ruleParameter = ruleParameter;
             this.property = property;
             this.action = action;
+        }
+
+        public Rule()
+        {
+            //Default Constructor - Included for easy creation for unit test use
         }
 
         public ruleTypeEnum getRuleType()
@@ -60,10 +65,16 @@ namespace BirdSim
         }
 
         public bool getGreaterThan() { return greaterThan; }
-
         public bool getLessThan() { return lessThan;} 
         public bool getEqualTo() { return equalTo;}
-
         public string getRuleName() { return name; }
+        
+        private bool isRuleSafe()
+        {
+            bool safe = false;
+            //Check the rule cannot contradict it's self
+            if(greaterThan == true && lessThan == true) { safe = false; }
+            return safe;
+        }
     }
 }

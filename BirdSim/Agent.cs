@@ -6,15 +6,15 @@ using System.Threading.Tasks;
 
 namespace BirdSim
 {
-    internal class Agent
+    public class Agent
     {
+        private string speciesName;
         private int breedingMigrationMonth;
-        private int hidingMigrationMonth;
-        private string currentLocation;
-        private int normalNorthernMigrationTempMax;
-        private int normalNorthernMigrationTempMin;
-        private int normalSouthernMigrationTempMax;
-        private int normalSouthernMigrationTempMin;
+        private int NestingMigrationMonth;
+        private Country currentLocation;
+        private Country NormalBreedingCountry;
+        private Country NormalNestingCountry;
+
 
         public Agent() { }
 

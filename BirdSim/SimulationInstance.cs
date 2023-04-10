@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace BirdSim
 {
-    internal class SimulationInstance
+    public class SimulationInstance
     {
         private List<Country> countries;
         private string instanceName;

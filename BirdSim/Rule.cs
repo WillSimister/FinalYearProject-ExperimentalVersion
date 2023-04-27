@@ -69,9 +69,9 @@ namespace BirdSim
         public bool getEqualTo() { return equalTo;}
         public string getRuleName() { return name; }
         
-        private bool isRuleSafe()
+        public bool isRuleSafe()
         {
-            bool safe = false;
+            bool safe = true;
             //Check the rule cannot contradict it's self
             if(greaterThan == true && lessThan == true) { safe = false; }
             return safe;

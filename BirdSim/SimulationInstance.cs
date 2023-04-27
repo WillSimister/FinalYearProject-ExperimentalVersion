@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -18,6 +19,12 @@ namespace BirdSim
         }
 
         public List<Country> Countries { get { return countries; } }
+
+        public Country getCountryFromName(string countryName)
+        {
+            Country country = countries.Where(x => x.getName().Equals(countryName)).FirstOrDefault();
+            return country;
+        }
 
         public string InstanceName { get { return instanceName;} }
 

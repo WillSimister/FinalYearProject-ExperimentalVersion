@@ -44,7 +44,6 @@ namespace BirdSim
                     else
                     {
                         experimentName = experimentName + 1;
-
                     }
                     fileName = @$"C:\ExperimentLogs\{experimentName}.txt";
                 }
@@ -55,7 +54,7 @@ namespace BirdSim
                 using (FileStream fs = File.Create(fileName))
                 {
                     // Add some text to file    
-                    Byte[] title = new UTF8Encoding(true).GetBytes("migration_type, agent_name, predicted_country, normal_migration_month, actual_migration_country, actual_migration_month\n");
+                    Byte[] title = new UTF8Encoding(true).GetBytes("migration_type, agent_name, predicted_country, normal_migration_month, actual_migration_country, actual_migration_month, currentTemperature\n");
                     fs.Write(title, 0, title.Length);
                 }
             }

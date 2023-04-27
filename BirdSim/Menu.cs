@@ -270,27 +270,27 @@ namespace BirdSim
             Console.Write("\n--Add southern most data >>> ");
             southernMostCountry.setClimateData(climateData.getSouthernPlover());
             Console.Write("Done");
-            Console.WriteLine("Using the ISO 2 Character code - what is the next country north of the Northern Country in this instance >>>");
+            Console.Write("\nUsing the ISO 2 Character code - what is the next country north of the Northern Country in this instance >>>");
             northNorthCountry = Console.ReadLine();
-            Console.WriteLine("Using the ISO 2 Character code - what is the next country east of the Northern Country in this instance >>>");
+            Console.Write("\nUsing the ISO 2 Character code - what is the next country east of the Northern Country in this instance >>>");
             eastNorthCountry = Console.ReadLine();
-            Console.WriteLine("Using the ISO 2 Character code - what is the next country south of the Northern Country in this instance >>>");
+            Console.Write("\nUsing the ISO 2 Character code - what is the next country south of the Northern Country in this instance >>>");
             southNorthCountry = Console.ReadLine();
-            Console.WriteLine("Using the ISO 2 Character code - what is the next country west of the Northern Country in this instance >>>");
+            Console.Write("\nUsing the ISO 2 Character code - what is the next country west of the Northern Country in this instance >>>");
             westNorthCountry = Console.ReadLine();
 
-            Console.WriteLine("Using the ISO 2 Character code - what is the next country north of the Southern Country in this instance >>>");
+            Console.Write("\nUsing the ISO 2 Character code - what is the next country north of the Southern Country in this instance >>>");
             northSouthCountry = Console.ReadLine();
-            Console.WriteLine("Using the ISO 2 Character code - what is the next country east of the Southern Country in this instance >>>");
+            Console.Write("\nUsing the ISO 2 Character code - what is the next country east of the Southern Country in this instance >>>");
             eastSouthCountry = Console.ReadLine();
-            Console.WriteLine("Using the ISO 2 Character code - what is the next country south of the Southern Country in this instance >>>");
+            Console.Write("\nUsing the ISO 2 Character code - what is the next country south of the Southern Country in this instance >>>");
             southSouthCountry = Console.ReadLine();
-            Console.WriteLine("Using the ISO 2 Character code - what is the next country west of the Southern Country in this instance >>>");
+            Console.Write("\nUsing the ISO 2 Character code - what is the next country west of the Southern Country in this instance >>>");
             westSouthCountry = Console.ReadLine();
 
             if (instanceName == "" || northNorthCountry == "" || northSouthCountry == "" || eastNorthCountry == "" || westNorthCountry == "" || southNorthCountry == "" || westSouthCountry == "" || eastNorthCountry == "")
             {
-                Console.WriteLine("Something wasn't inputted correctly - try again");
+                Console.WriteLine("\nSomething wasn't inputted correctly - try again");
                 ShowCreateEnvironmentMenu();
             }
 
@@ -426,6 +426,7 @@ namespace BirdSim
             }
             Console.Write("\n what int value should the property value be greater than, less to or equal to? ");
             Console.Write("\n >>> ");
+            
             propertyValue = int.Parse(Console.ReadLine());
             //Console.Write("\n--- Should the Simulation Property have any other indicators --- should there be a logical AND or a logical OR? (Y/N) >>> ");
             //string yesNo = Console.ReadLine();
@@ -553,9 +554,9 @@ namespace BirdSim
             string agentInput = Console.ReadLine();
 
             Console.WriteLine("--- Select an Environment --------------------------------------------------");
-            foreach (LatitudinalAgent latitudinalAgent in controller.getAgentsList())
+            foreach (SimulationInstance environmentInstance in controller.getEnvironments())
             {
-                Console.WriteLine($"---({controller.getAgentsList().IndexOf(latitudinalAgent)})Name: {latitudinalAgent.getName()}------------------------------------");
+                Console.WriteLine($"---({controller.getEnvironments().IndexOf(environmentInstance)})Name: {environmentInstance.InstanceName}------------------------------------");
             }
             Console.WriteLine("----------------------------------------------------------------------");
             Console.Write("--- Select Environment >>> ");

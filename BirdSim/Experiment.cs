@@ -135,13 +135,13 @@ namespace BirdSim
                     Country nextClosestNorthernCountry = simulationController.getCountryFromCountryCode(latAgent.getNormalNorthernCountry().getClosestNorthern());
                     latAgent.setCurrentLocation(nextClosestNorthernCountry);
                     //Log Migration
-                    logger.addNewLineToLog($"breeding migration, {latAgent.getName()}, {latAgent.getNormalNorthernCountry().getName()}, {latAgent.getNormalNorthernMigrationMonth},{latAgent.getCurrentLocation},{timeController.getSimulationController().getMonth()}");
+                    logger.addNewLineToLog($"breeding migration, {latAgent.getName()}, {latAgent.getNormalNorthernCountry().getName()}, {latAgent.getNormalNorthernMigrationMonth},{latAgent.getCurrentLocation},{timeController.getSimulationController().getMonth()}, {latAgent.getCurrentLocation().getClimateData().GetValueOrDefault(timeController.getSimulationController().getMonth())}");
                 }
                 else
                 {
                     latAgent.setCurrentLocation(latAgent.getNormalNorthernCountry());
                     //Log Migration
-                    logger.addNewLineToLog($"breeding migration, {latAgent.getName()}, {latAgent.getNormalNorthernCountry().getName()}, {latAgent.getNormalNorthernMigrationMonth()},{latAgent.getCurrentLocation().getName()},{timeController.getSimulationController().getMonth()}");
+                    logger.addNewLineToLog($"breeding migration, {latAgent.getName()}, {latAgent.getNormalNorthernCountry().getName()}, {latAgent.getNormalNorthernMigrationMonth()},{latAgent.getCurrentLocation().getName()},{timeController.getSimulationController().getMonth()}, {latAgent.getCurrentLocation().getClimateData().GetValueOrDefault(timeController.getSimulationController().getMonth())}");
                 }
             }
             else if (rule.getAction() == ActionEnum.migrateSouth)
@@ -150,14 +150,14 @@ namespace BirdSim
                 {
                     Country nextClosestSouthernCountry = simulationController.getCountryFromCountryCode(latAgent.getNormalSouthernCountry().getClosestSouthern());
                     latAgent.setCurrentLocation(nextClosestSouthernCountry);
-                    logger.addNewLineToLog($"nesting migration, {latAgent.getName()}, {latAgent.getNormalSouthernCountry().getName()}, {latAgent.getNormalSouthernMigrationMonth},{latAgent.getCurrentLocation},{timeController.getSimulationController().getMonth()}");
+                    logger.addNewLineToLog($"nesting migration, {latAgent.getName()}, {latAgent.getNormalSouthernCountry().getName()}, {latAgent.getNormalSouthernMigrationMonth},{latAgent.getCurrentLocation},{timeController.getSimulationController().getMonth()}, {latAgent.getCurrentLocation().getClimateData().GetValueOrDefault(timeController.getSimulationController().getMonth())}");
 
                 }
                 else
                 {
                     //log Migration
                     latAgent.setCurrentLocation(latAgent.getNormalSouthernCountry());
-                    logger.addNewLineToLog($"nesting migration, {latAgent.getName()}, {latAgent.getNormalSouthernCountry().getName()}, {latAgent.getNormalSouthernMigrationMonth},{latAgent.getCurrentLocation},{timeController.getSimulationController().getMonth()}");
+                    logger.addNewLineToLog($"nesting migration, {latAgent.getName()}, {latAgent.getNormalSouthernCountry().getName()}, {latAgent.getNormalSouthernMigrationMonth},{latAgent.getCurrentLocation},{timeController.getSimulationController().getMonth()}, {latAgent.getCurrentLocation().getClimateData().GetValueOrDefault(timeController.getSimulationController().getMonth())}");
 
                 }
             }
